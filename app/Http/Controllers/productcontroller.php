@@ -9,12 +9,17 @@ class productcontroller extends Controller
 
    public function store(Request $request){
     
-        $product=new product;
-         
-         $product->productname=$request->productname;
-         $product->price=$request->price;
-         $product->quality=$request->quality;
-         $product->brand=$request->brand;
-         $product->save();
+        $data=$request->all();
+        try{
+          product::create($data);
+
+          return response()->json(['message'=>"Product inserted successfully"]);
+          
+        }
+        catch(Exception $e){
+          Log::error($e);
+          return response()->json(['error'=>"Failed to add the data"]);
+          
+        }
     }
 }
